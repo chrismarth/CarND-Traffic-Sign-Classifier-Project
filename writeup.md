@@ -35,9 +35,9 @@ The bar chart given below shows that certain labels defintely appear more freque
 ![Count of Images per Label in Train and Test Sets](exploratoryAnalysisBarPlot.png)
 <span style="text-align: center;">Figure 1. Count of Images per Label in Train and Test Sets</span>
 
-###Model Architecture - Design and Test
+### Model Architecture - Design and Test
 
-####1. Image Pre-Processing
+#### 1. Image Pre-Processing
 
 Image pre-processing was performed in order to improve model performance. As such, the pre-processing steps were performed iteratively, with additional steps added until acceptable model performance was achieved.
 
