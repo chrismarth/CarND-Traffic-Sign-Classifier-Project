@@ -3,20 +3,20 @@
 
 ## **Introduction**
 
-The goal this project were to create a model to accurately classify images of German traffic signs. In order to accomplish this goal, the following tasks were performed:
+The goal this project was to create a model capable of accurately classifying images of German traffic signs. In order to accomplish this goal, the following tasks were performed:
 
-- Load, summarize, and explore the image data set used for the analysis.
-- Design, train, validate and test a model architecture that was capable of accurately classifying the data.
-- Use the model to make predictions on a new set of images downloaded separately from the internet.
+- Load, summarize, and explore the sample image data set used for the analysis.
+- Design, train, validate and test a model architecture that was capable classifying the sample data validation set to 93% accuracy.
+- Use the model to make predictions on a new set of images downloaded separately from the Internet.
 - Analyze the confidence of the predictions on this new data set.
 
-A summary of the work done for each of these tasks along with a discussion of the results obtained is contained in the sections that follow. Throughout these sections references to a corresponding Jupyter notebook will be made. This notebook (CarND-Traffic-Sign-Classifier-Project.ipynb) can be found withing the same GitHub repository that contained this writeup.
+A summary of the work done for each of these tasks, along with a discussion of the results obtained, is contained in the sections that follow. Throughout these sections, references to a corresponding Jupyter notebook will be made. This notebook (CarND-Traffic-Sign-Classifier-Project.ipynb) can be found within the same GitHub repository that contained this writeup.
 
 ### Data Set Summary & Exploration
 
 #### 1. Summary of the data set
 
-The data set used for this analysis was derived from the data made available at the [INI Benchmark Website](http://benchmark.ini.rub.de/?section=gtsrb&subsection=dataset). This was a set of images obtained from actual video obtained while driving on German streets. There are 43 different types of signs contained within roughly 50,000 images. For convenience, pickled versions of this source data set, that partitioned the data into training, validation, and test sets were provided. These pickled data sets also transformed each image into a 32x32 pixel RGB format. From these data sets some basic statisitics were retrieved in order to get a better understanding of the data contents. This analysis can be found in the Jupyter notebook in analysis cells under the heading ' Step 1: Dataset Summary & Exploration' and sub-heading 'Provide a Basic Summary of the Data Set Using Python, Numpy and/or Pandas'
+The data set used for this analysis was derived from the data made available at the [INI Benchmark Website](http://benchmark.ini.rub.de/?section=gtsrb&subsection=dataset). This was a set of images obtained from actual video that was recorded while driving on German streets. There are 43 different types of signs contained within roughly 50,000 images. For convenience, pickled versions of this source data set, that partitioned the data into training, validation, and test sets were provided. These pickled data sets also transformed each image into a 32x32 pixel RGB format. From these data sets some basic statisitics were retrieved in order to get a better understanding of the data contents. This analysis can be found in the Jupyter notebook in analysis cells under the heading ' Step 1: Dataset Summary & Exploration' and sub-heading 'Provide a Basic Summary of the Data Set Using Python, Numpy and/or Pandas'
 
 This analysis revealed the following characteristics of the data set
 
@@ -30,7 +30,7 @@ This analysis revealed the following characteristics of the data set
 
 Beyond the basic data set characteristics given above, we went one step further to get an understanding of how the images were distributed across the classification labels. Knowing this information could inform the design of the model in subsequent steps. This analysis can be found in the Jupyter notebook in analysis cells under the heading ' Step 1: Dataset Summary & Exploration' and sub-heading 'Include an exploratory visualization of the dataset'
 
-The bar chart given below shows that certain labels defintely appear more frequently than others within the data set. We can also make a subjective conclusion that both the training and test data sets have similar distributions of the labels. Therefore, we can conclude that a model derived from the training set should perform somewhat similarly on the test set.
+The bar chart given below shows that certain labels defintely appear more frequently than others within the data set. We can also make a subjective conclusion that both the training and test data sets have similar distributions of the labels. Therefore, we can conclude that a model derived from the training set should be able to perform somewhat similarly on the test set.
 
 ![Count of Images per Label in Train and Test Sets](exploratoryAnalysisBarPlot.png)
 <span style="text-align: center;">Figure 1. Count of Images per Label in Train and Test Sets</span>
@@ -41,11 +41,11 @@ The bar chart given below shows that certain labels defintely appear more freque
 
 Image pre-processing was performed in order to improve model performance. As such, the pre-processing steps were performed iteratively, with additional steps added until acceptable model performance was achieved.
 
-First, images were converted from RGB to grayscale. This was done to simplify the input to model, which would reduce the number of model parameters required and also minimize slight color differences for images of the same label. 
+First, images were converted from RGB to grayscale. This was done to simplify the input to model, which would reduce the number of model parameters required and also minimize slight color differences for images of the same label.
 
 Second, grayscale values were normalized between 0 and 1. This was done in order to help optimizer performance by minimizing the spread in greyscale values across images.
 
-Finally, normalized values were then centered on the mean. This was again done to condition the input as much as possible to help minimize the amount of work the optimizer needed to do.
+Finally, normalized values were then centered on the mean. Again, this was done to condition the input as much as possible to help minimize the amount of extra work the optimizer needed to do.
 
 The code for this step is contained in the Jupyter notebook in analysis cells under the heading ' Step 2: Design and Test a Model Architecture' and sub-heading 'Pre-process the Data Set'. A 'pre-process' function was written and used to pre-process the training, validation, test, and new data sets before passing them to the model for classification.
 
@@ -53,9 +53,9 @@ The code for this step is contained in the Jupyter notebook in analysis cells un
 
 As mentioned above training, validation, and test data sets were provided. Therefore, there was not a significant amount of work to be done for this step. The setup for each data set is contained in the Jupyter notebook under the heading 'Step 0: Load The Data'
 
-My final training set had 34799 number of images. My validation set and test set had 4410 and 12630 number of images, respectively.
+My final training set had 34799 number of images. My validation set and test set had 4410 and 12630 number of images, respectively. Multiple cross-validation sets might have been produced using a k-folds approach, but in the interest of simplicity, and the fact that the model performed sufficiently without resorting to this, this approach was not taken in this analysis.
 
-I chose not to augment the dataset with manufactured or "fake" data as I don't particurlarly see the value in doing this. Data generated from existing data, theoretically, adds no new information to the model. Also, if one is not careful, it would seem to be possible to adversely affect the distribution of labels if manufactured data were introduced.
+I also chose not to augment the dataset with manufactured or "fake" data as I don't particurlarly see the value in doing this. Data generated from existing data, theoretically, adds no new information to the model. Also, if one is not careful, it would seem to be possible to adversely affect the distribution of labels if manufactured data were introduced.
 
 
 #### 3. Description of the final model architecture
@@ -80,7 +80,7 @@ My final model was heavily influenced by the LenNet architecture and consisted o
 | RELU					|		       					       			|
 | Fully connected		| outputs 84        							|
 | RELU					|		       					       			|
-| Dropout				|		       					       			|
+| Dropout				| 40% keep probability 			       			|
 | Fully connected		| outputs 43        							|
 | Softmax				|              									|
 
@@ -90,7 +90,7 @@ As mentioned, this is very similar to the LetNet architecture with the addition 
 
 The code for training the model is located in the Jupyter notebook in analysis cells under the heading ' Step 2: Design and Test a Model Architecture' and sub-heading 'Train, Validate and Test the Model'
 
-To train the model, I used the AdamOptimizer to minimize the softmax cross entropy of the model output. The Adam optimizer was chosen in hopes that it's features that provide 'momentum' would allow it find a solution while being less likely to get caught in a local minimum than the standard GradientDescentOptimizer. From there the number of epochs, batch size, and learning rate were chosen iteratively and the final values represent those values that allowed the model to achieve the best accuracy performance in the minimum number of epochs. To summarize, the final model training parameters chosen are given in table 2.
+To train the model, I used the AdamOptimizer to minimize the softmax cross entropy of the model output. The Adam optimizer was chosen in hopes that it's features that provide 'momentum' would allow it find a solution while being less likely to get caught in a local minimum than the standard GradientDescentOptimizer. From there, the number of epochs, batch size, and learning rate were chosen iteratively and the final values represent the combination of values that allowed the model to achieve the best accuracy performance in the minimum number of epochs. To summarize, the final model training parameters chosen are given in table 2.
 
 <span style="text-align: center;">Table 2. Final model training parameters</span>
 
@@ -110,20 +110,23 @@ My final model results were:
 * validation set accuracy of 0.94
 * test set accuracy of 0.92
 
-As mentioned above, the LeNet model was chosen as the initial input for the model. This was chosen due to its convolutional nature. Given that we would be trying to classify common traffic signs in multiple images, where the same basic features, such as edges, shapes, groupings of shapes, of each sign may appear slightly differently in the images, a convolutional approach seemed appropriate. A test run was performed with the base LeNet architecture, and this run showed sub-standard accuracy performance on the validation set and also indicated some level of over-fitting as the validation set accuracy was several points lower than the test set. From here, basic changes to image pre-processing were applied, which improved validation accuracy somewhat, but did not remedy the over-fitting issue. To address the over-fitting issue several things were tried, including, changing the total number of layers, adjusting the output size of each layer, and adding a dropout layer between the fully-connected layers. The addition of the dropout layer improve produced the greatest reduction in the overfitting issue so it was chosen for the final architecture. The location of the dropout within the fully connected layers had minimal impact, but locating it before the final output layer seemed to make the most intuitive sense so that is where it was located in the final architecture. The final keep probability was aggressively chosen, but proved to produce the best accuracy. With all that said, despite sufficient performance on the validation set, the over-fitting was never completely removed. I believe that instead of trying to address this with the model architecture, splitting up the training set into several cross-validation sets might have helped reduce over-fitting.
+As mentioned above, the LeNet model was chosen as the initial design for the model. This was chosen due to its convolutional nature. Given that we would be trying to classify common traffic signs in multiple images, where the same basic features, such as edges, shapes, groupings of shapes, of each sign may appear slightly differently in the images, a convolutional approach seemed appropriate. It also greatly helped that the traffic sign test images had the same pixel dimension and color depth (after pre-processing) as the MNIST images. This provided a good starting point for choosing convolution filter and max pooling dimensions. A test run was performed with the base LeNet architecture, and this run showed sub-standard accuracy performance on the validation set and also indicated some level of over-fitting as the validation set accuracy was several points lower than the test set. From here, basic changes to image pre-processing were applied, which improved validation accuracy somewhat, but did not remedy the over-fitting issue. To address the over-fitting issue several things were tried, including, changing the total number of layers, changing filter sizes, adjusting the output size of each fully connected layer, and adding a dropout layer between the fully-connected layers. The addition of the dropout layer improve produced the greatest reduction in the overfitting issue so it was chosen for the final architecture. The location of the dropout within the fully connected layers had minimal impact, but locating it before the final output layer seemed to make the most intuitive sense so that is where it was located in the final architecture. The final keep probability was aggressively chosen, but proved to produce the best accuracy. With all that said, despite sufficient performance on the validation set, the over-fitting was never completely removed. As mentioned above, I believe that instead of trying to address this with the model architecture, splitting up the training set into multiple cross-validation sets using a k-folds approach might have had produced better results to further reduced the over-fitting.
 
 ### Test a Model on New Images
 
-#### 1. Choose five German traffic signs found on the web and provide them in the report. For each image, discuss what quality or qualities might be difficult to classify.
+#### 1. Collect Five German traffic signs from the web
 
-Here are five German traffic signs that I found on the web:
+Five German traffic signs were retrieved from the world-wide-web using a standard image search. The images that were selected were chosen for the clarity of the sign and the absence of any kind of watermarking (which proved to be a challenge). The five signs and their associated image and labels (in parentheses) that were chosen are as follows
 
-![alt text][image4] ![alt text][image5] ![alt text][image6] 
-![alt text][image7] ![alt text][image8]
+**30kph Speed Limit (1)** ![30kph Speed Limit](testImages/30kph_1.jpg) <br/>
+**Children Crossing (28)** ![Children Crossing](testImages/ChildrenCrossing_28.jpg) <br/>
+**Roundabout (40)** ![Roundabout](testImages/Roundabout_40.jpg) <br/>
+**Stop (14)** ![Stop](testImages/Stop_14.jpg) <br/>
+**Turn Right Ahead (33)** ![Turn Right Ahead](testImages/TurnRightAhead_33.jpg) <br/>
 
-The first image might be difficult to classify because ...
+Once images were selected, they were resized to 32x32 pixels and converted to the RGB colorspace. In general, these images should be fairly straightforward to classify as the are fairly pristine. That is, with the exception of the first image they are straight-on views of the road sign with very little skew, color deviations or background noise. This, of course, assumes that the model has learned to ignore these factors during classification. The first image may be more difficult to classify as it does include background noise and shading on the sign itself.
 
-#### 2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. Identify where in your code predictions were made. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
+#### 2. New model prediction
 
 The code for making predictions on my final model is located in the tenth cell of the Ipython notebook.
 
@@ -131,20 +134,22 @@ Here are the results of the prediction:
 
 | Image			        |     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| Stop Sign      		| Stop sign   									| 
-| U-turn     			| U-turn 										|
-| Yield					| Yield											|
-| 100 km/h	      		| Bumpy Road					 				|
-| Slippery Road			| Slippery Road      							|
+| 30kph Speed Limit    	| 30kph Speed Limit   							| 
+| Children Crossing    	| Children Crossing 							|
+| Roundabout			| Roundabout									|
+| Stop	      	      	| Stop					 	          			|
+| Turn Right Ahead		| Turn Right Ahead      						|
 
 
-The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. This compares favorably to the accuracy on the test set of ...
+The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. This is comparable to the accuracy of the test, given that we only attempted to classify 5 signs (any improvement would have required 100% accuracy, which was not achieved with the test set)
 
-#### 3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction and identify where in your code softmax probabilities were outputted. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
+#### 3. Certainty of Model Predictions on New Images
 
 The code for making predictions on my final model is located in the 11th cell of the Ipython notebook.
 
-For the first image, the model is relatively sure that this is a stop sign (probability of 0.6), and the image does contain a stop sign. The top five soft max probabilities were
+##### 30kph Speed Limit - Softmax probability
+
+For the 30kph Speed Limit image, the model is relatively sure that this is a stop sign (probability of 0.6), and the image does contain a stop sign. The top five soft max probabilities were
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
@@ -155,4 +160,52 @@ For the first image, the model is relatively sure that this is a stop sign (prob
 | .01				    | Slippery Road      							|
 
 
-For the second image ... 
+##### Children Crossing - Softmax probability
+
+For the 30kph Speed Limit image, the model is relatively sure that this is a stop sign (probability of 0.6), and the image does contain a stop sign. The top five soft max probabilities were
+
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| .60         			| Stop sign   									| 
+| .20     				| U-turn 										|
+| .05					| Yield											|
+| .04	      			| Bumpy Road					 				|
+| .01				    | Slippery Road      							|
+
+##### Roundabout - Softmax probability
+
+For the 30kph Speed Limit image, the model is relatively sure that this is a stop sign (probability of 0.6), and the image does contain a stop sign. The top five soft max probabilities were
+
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| .60         			| Stop sign   									| 
+| .20     				| U-turn 										|
+| .05					| Yield											|
+| .04	      			| Bumpy Road					 				|
+| .01				    | Slippery Road      							|
+
+##### Stop - Softmax probability
+
+For the 30kph Speed Limit image, the model is relatively sure that this is a stop sign (probability of 0.6), and the image does contain a stop sign. The top five soft max probabilities were
+
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| .60         			| Stop sign   									| 
+| .20     				| U-turn 										|
+| .05					| Yield											|
+| .04	      			| Bumpy Road					 				|
+| .01				    | Slippery Road      							|
+
+##### Turn Right Ahead - Softmax probability
+
+For the 30kph Speed Limit image, the model is relatively sure that this is a stop sign (probability of 0.6), and the image does contain a stop sign. The top five soft max probabilities were
+
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| .60         			| Stop sign   									| 
+| .20     				| U-turn 										|
+| .05					| Yield											|
+| .04	      			| Bumpy Road					 				|
+| .01				    | Slippery Road      							|
+
+As expected, the clarity of the images allowed the model to be fairly confident of its predictions for all but the first image.
