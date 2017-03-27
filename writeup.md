@@ -33,7 +33,6 @@ Beyond the basic data set characteristics given above, we went one step further 
 The bar chart given below shows that certain labels defintely appear more frequently than others within the data set. We can also make a subjective conclusion that both the training and test data sets have similar distributions of the labels. Therefore, we can conclude that a model derived from the training set should be able to perform somewhat similarly on the test set.
 
 ![Count of Images per Label in Train and Test Sets](exploratoryAnalysisBarPlot.png)
-<span style="text-align: center;">Figure 1. Count of Images per Label in Train and Test Sets</span>
 
 ### Model Architecture - Design and Test
 
@@ -60,11 +59,9 @@ I also chose not to augment the dataset with manufactured or "fake" data as I do
 
 #### 3. Description of the final model architecture
 
-The code for this step is contained in the Jupyter notebook in analysis cells under the heading ' Step 2: Design and Test a Model Architecture' and sub-heading 'Pre-process the Data Set'
+The code for this step is contained in the Jupyter notebook in analysis cells under the heading 'Step 2: Design and Test a Model Architecture' and sub-heading 'Pre-process the Data Set'
 
 My final model was heavily influenced by the LenNet architecture and consisted of the following layers:
-
-<span style="text-align: center;">Table 1. Model Architecture</span>
 
 | Layer         		|     Description	        					|
 |:---------------------:|:---------------------------------------------:|
@@ -88,11 +85,9 @@ As mentioned, this is very similar to the LetNet architecture with the addition 
 
 #### 4. Model Training.
 
-The code for training the model is located in the Jupyter notebook in analysis cells under the heading ' Step 2: Design and Test a Model Architecture' and sub-heading 'Train, Validate and Test the Model'
+The code for training the model is located in the Jupyter notebook in analysis cells under the heading 'Step 2: Design and Test a Model Architecture' and sub-heading 'Train, Validate and Test the Model'
 
-To train the model, I used the AdamOptimizer to minimize the softmax cross entropy of the model output. The Adam optimizer was chosen in hopes that it's features that provide 'momentum' would allow it find a solution while being less likely to get caught in a local minimum than the standard GradientDescentOptimizer. From there, the number of epochs, batch size, and learning rate were chosen iteratively and the final values represent the combination of values that allowed the model to achieve the best accuracy performance in the minimum number of epochs. To summarize, the final model training parameters chosen are given in table 2.
-
-<span style="text-align: center;">Table 2. Final model training parameters</span>
+To train the model, I used the AdamOptimizer to minimize the softmax cross entropy of the model output. The Adam optimizer was chosen in hopes that it's features that provide 'momentum' would allow it find a solution while being less likely to get caught in a local minimum than the standard GradientDescentOptimizer. From there, the number of epochs, batch size, and learning rate were chosen iteratively and the final values represent the combination of values that allowed the model to achieve the best accuracy performance in the minimum number of epochs. To summarize, the final model training parameters chosen are given in the following table.
 
 | Parameter         	|     Final Value    |
 |:---------------------:|:------------------:|
@@ -102,7 +97,7 @@ To train the model, I used the AdamOptimizer to minimize the softmax cross entro
 
 #### 5. Model Development.
 
-The code for training the model is located in the Jupyter notebook in analysis cells under the heading ' Step 2: Design and Test a Model Architecture' and sub-heading 'Train, Validate and Test the Model'. Accuracy calculations occur, specifically in the last two cells of this section.
+The code for training the model is located in the Jupyter notebook in analysis cells under the heading 'Step 2: Design and Test a Model Architecture' and sub-heading 'Train, Validate and Test the Model'. Accuracy calculations occur, specifically in the last two cells of this section.
 
 My final model results were:
 
@@ -116,7 +111,7 @@ As mentioned above, the LeNet model was chosen as the initial design for the mod
 
 #### 1. Collect Five German traffic signs from the web
 
-Five German traffic signs were retrieved from the world-wide-web using a standard image search. The images that were selected were chosen for the clarity of the sign and the absence of any kind of watermarking (which proved to be a challenge). The five signs and their associated image and labels (in parentheses) that were chosen are as follows
+Five German traffic signs were retrieved from the Internet using a standard image search. The images that were selected were chosen for the clarity of the sign and the absence of any kind of watermarking (which proved to be a challenge). The five signs and their associated image and labels (in parentheses) that were chosen are as follows
 
 **30kph Speed Limit (1)** ![30kph Speed Limit](testImages/30kph_1.jpg) <br/>
 **Children Crossing (28)** ![Children Crossing](testImages/ChildrenCrossing_28.jpg) <br/>
@@ -124,13 +119,16 @@ Five German traffic signs were retrieved from the world-wide-web using a standar
 **Stop (14)** ![Stop](testImages/Stop_14.jpg) <br/>
 **Turn Right Ahead (33)** ![Turn Right Ahead](testImages/TurnRightAhead_33.jpg) <br/>
 
-Once images were selected, they were resized to 32x32 pixels and converted to the RGB colorspace. In general, these images should be fairly straightforward to classify as the are fairly pristine. That is, with the exception of the first image they are straight-on views of the road sign with very little skew, color deviations or background noise. This, of course, assumes that the model has learned to ignore these factors during classification. The first image may be more difficult to classify as it does include background noise and shading on the sign itself.
+Once images were selected, they were resized to 32x32 pixels and converted to the RGB colorspace. In general, these images should be fairly straightforward to classify as they are fairly pristine. That is, with the exception of the first image they are straight-on views of the road sign with very little skew, color deviation or background noise. This, of course, assumes that the model has learned to ignore these factors during classification. The first image may be more difficult to classify as it does include background noise and shading on the sign itself.
+
+The code for managing the import of new images is found in the Jupyter notebook in analysis cells under the heading 'Step 3: Test a Model on New Images' and sub-heading 'Load and Output the Images'.
 
 #### 2. New model prediction
 
-The code for making predictions on my final model is located in the tenth cell of the Ipython notebook.
 
-Here are the results of the prediction:
+The code for classifying the new images can be found in the Jupyter notebook in analysis cells under the heading 'Step 3: Test a Model on New Images' and sub-heading 'Predict the Sign Type for Each Image'
+
+The results of the prediction are as follows:
 
 | Image			        |     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
@@ -140,12 +138,12 @@ Here are the results of the prediction:
 | Stop	      	      	| Stop					 	          			|
 | Turn Right Ahead		| Turn Right Ahead      						|
 
-
 The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. This is comparable to the accuracy of the test, given that we only attempted to classify 5 signs (any improvement would have required 100% accuracy, which was not achieved with the test set)
 
 #### 3. Certainty of Model Predictions on New Images
 
-The code for making predictions on my final model is located in the 11th cell of the Ipython notebook.
+The code showing prediction accuracy and confidence for the new images can be found in the Jupyter notebook in analysis cells under the heading 'Step 3: Test a Model on New Images' and sub-headings 'Analyze Performance' and 'Output Top 5 Softmax Probabilities For Each Image Found on the Web'
+
 
 ##### 30kph Speed Limit - Softmax probability
 
