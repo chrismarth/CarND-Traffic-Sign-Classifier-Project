@@ -20,11 +20,11 @@ The data set used for this analysis was derived from the data made available at 
 
 This analysis revealed the following characteristics of the data set
 
-* The size of training set was 34799.
-* The size of validation set was 4410.
-* The size of test set is 12630.
-* The shape of a traffic sign image is (32, 32, 3) - (Height, Width, Channels).
-* There were 43 unique classes/labels in the data set.
+* **The size of training set was 34799.**
+* **The size of validation set was 4410.**
+* **The size of test set is 12630.**
+* **The shape of a traffic sign image is (32, 32, 3) - (Height, Width, Channels).**
+* **There were 43 unique classes/labels in the data set.**
 
 ####2. Exploratory visualization of the dataset.
 
@@ -44,7 +44,9 @@ First, images were converted from RGB to grayscale. This was done to simplify th
 
 Second, grayscale values were normalized between 0 and 1. This was done in order to help optimizer performance by minimizing the spread in greyscale values across images.
 
-Finally, normalized values were then centered on the mean. Again, this was done to condition the input as much as possible to help minimize the amount of extra work the optimizer needed to do.
+Normalized values were then centered on the mean. Again, this was done to condition the input as much as possible to help minimize the amount of extra work the optimizer needed to do.
+
+Finally, the order of images was randomized before each training epoch using the scikit-learn shuffle function.
 
 The code for this step is contained in the Jupyter notebook in analysis cells under the heading ' Step 2: Design and Test a Model Architecture' and sub-heading 'Pre-process the Data Set'. A 'pre-process' function was written and used to pre-process the training, validation, test, and new data sets before passing them to the model for classification.
 
@@ -64,7 +66,7 @@ The code for this step is contained in the Jupyter notebook in analysis cells un
 My final model was heavily influenced by the LenNet architecture and consisted of the following layers:
 
 | Layer         		|     Description	        					|
-|:---------------------:|:---------------------------------------------:|
+|:----------------------|:----------------------------------------------|
 | Input         		| 32x32x1 Grayscale image   					|
 | Convolution 5x5     	| 1x1 stride, valid padding, outputs 28x28x6 	|
 | RELU					|												|
@@ -77,11 +79,11 @@ My final model was heavily influenced by the LenNet architecture and consisted o
 | RELU					|		       					       			|
 | Fully connected		| outputs 84        							|
 | RELU					|		       					       			|
-| Dropout				| 40% keep probability 			       			|
+| Dropout				| 50% keep probability 			       			|
 | Fully connected		| outputs 43        							|
 | Softmax				|              									|
 
-As mentioned, this is very similar to the LetNet architecture with the addition of a dropout layer before the final output layer. This was added to help minimize overfitting of the training set.
+As mentioned, this is very similar to the LetNet architecture with the addition of a dropout layer before the final output layer (with care to make sure it is only effective during training). This was added to help minimize overfitting of the training set.
 
 #### 4. Model Training.
 
@@ -90,10 +92,10 @@ The code for training the model is located in the Jupyter notebook in analysis c
 To train the model, I used the AdamOptimizer to minimize the softmax cross entropy of the model output. The Adam optimizer was chosen in hopes that it's features that provide 'momentum' would allow it find a solution while being less likely to get caught in a local minimum than the standard GradientDescentOptimizer. From there, the number of epochs, batch size, and learning rate were chosen iteratively and the final values represent the combination of values that allowed the model to achieve the best accuracy performance in the minimum number of epochs. To summarize, the final model training parameters chosen are given in the following table.
 
 | Parameter         	|     Final Value    |
-|:---------------------:|:------------------:|
-| Epochs         		| 15  			     |
+|:----------------------|:------------------:|
+| Epochs         		| 10  			     |
 | Batch Size          	| 64 	             |
-| Learning Rate			| 0.0025			 |
+| Learning Rate			| 0.001			     |
 
 #### 5. Model Development.
 
@@ -101,11 +103,11 @@ The code for training the model is located in the Jupyter notebook in analysis c
 
 My final model results were:
 
-* **Training set accuracy of 0.98**
-* **Validation set accuracy of 0.94**
-* **Test set accuracy of 0.92**
+* **Training set accuracy of 0.995**
+* **Validation set accuracy of 0.945**
+* **Test set accuracy of 0.922**
 
-As mentioned above, the LeNet model was chosen as the initial design for the model. This was chosen due to its convolutional nature. Given that we would be trying to classify common traffic signs in multiple images, where the same basic features, such as edges, shapes, groupings of shapes, of each sign may appear slightly differently in the images, a convolutional approach seemed appropriate. It also greatly helped that the traffic sign test images had the same pixel dimension and color depth (after pre-processing) as the MNIST images. This provided a good starting point for choosing convolution filter and max pooling dimensions. A test run was performed with the base LeNet architecture, and this run showed sub-standard accuracy performance on the validation set and also indicated some level of over-fitting as the validation set accuracy was several points lower than the test set. From here, basic changes to image pre-processing were applied, which improved validation accuracy somewhat, but did not remedy the over-fitting issue. To address the over-fitting issue several things were tried, including, changing the total number of layers, changing filter sizes, adjusting the output size of each fully connected layer, and adding a dropout layer between the fully-connected layers. The addition of the dropout layer improve produced the greatest reduction in the overfitting issue so it was chosen for the final architecture. The location of the dropout within the fully connected layers had minimal impact, but locating it before the final output layer seemed to make the most intuitive sense so that is where it was located in the final architecture. The final keep probability was aggressively chosen, but proved to produce the best accuracy. With all that said, despite sufficient performance on the validation set, the over-fitting was never completely removed. As mentioned above, I believe that instead of trying to address this with the model architecture, splitting up the training set into multiple cross-validation sets using a k-folds approach might have had produced better results to further reduced the over-fitting.
+As mentioned above, the LeNet model was chosen as the initial design for the model. This was chosen due to its convolutional nature. Given that we would be trying to classify common traffic signs in multiple images, where the same basic features, such as edges, shapes, groupings of shapes, of each sign may appear slightly differently in the images, a convolutional approach seemed appropriate. It also greatly helped that the traffic sign test images had the same pixel dimension and color depth (after pre-processing) as the MNIST images. This provided a good starting point for choosing convolution filter and max pooling dimensions. A test run was performed with the base LeNet architecture, and this run showed sub-standard accuracy performance on the validation set and also indicated some level of over-fitting as the validation set accuracy was several points lower than the test set. From here, basic changes to image pre-processing were applied, which improved validation accuracy somewhat, but did not remedy the over-fitting issue. To address the over-fitting issue several things were tried, including, changing the total number of layers, changing filter sizes, adjusting the output size of each fully connected layer, and adding a dropout layer between the fully-connected layers. The addition of the dropout layer improve produced the greatest reduction in the overfitting issue so it was chosen for the final architecture. The location of the dropout within the fully connected layers had minimal impact, but locating it before the final output layer seemed to make the most intuitive sense so that is where it was located in the final architecture. The final keep probability was aggressively chosen, but proved to produce the best accuracy. With all that said, despite sufficient performance on the validation set, the over-fitting was never completely removed. As mentioned above, I believe that instead of trying to address this with the model architecture, splitting up the training set into multiple cross-validation sets using a k-folds approach or potentially increasing the size of the validation set (while reducing the size of the training set) might have had produced better results to further reduced the over-fitting. Another possibility for reducing the over-fitting would have been to add regularization to loss function.
 
 ### Test a Model on New Images
 
@@ -125,20 +127,19 @@ The code for managing the import of new images is found in the Jupyter notebook 
 
 #### 2. New model prediction
 
-
 The code for classifying the new images can be found in the Jupyter notebook in analysis cells under the heading 'Step 3: Test a Model on New Images' and sub-heading 'Predict the Sign Type for Each Image'
 
 The results of the prediction are as follows:
 
-| Image			        |     Prediction	        					| 
-|:---------------------:|:---------------------------------------------:| 
-| 30kph Speed Limit    	| 30kph Speed Limit   							| 
+| Image			        |     Prediction	        					|
+|:----------------------|:----------------------------------------------|
+| 30kph Speed Limit    	| 30kph Speed Limit   							|
 | Children Crossing    	| Children Crossing 							|
 | Roundabout			| Roundabout									|
 | Stop	      	      	| Stop					 	          			|
 | Turn Right Ahead		| Turn Right Ahead      						|
 
-The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. This is comparable to the accuracy of the test, given that we only attempted to classify 5 signs (any improvement would have required 100% accuracy, which was not achieved with the test set)
+The model was able to correctly guess 5 of the 5 traffic signs, which gives an accuracy of 100%. This, obviously, was on the order of what was expected given the accuracy of the training, validation, and test sets.
 
 #### 3. Certainty of Model Predictions on New Images
 
@@ -147,63 +148,63 @@ The code showing prediction accuracy and confidence for the new images can be fo
 
 ##### 30kph Speed Limit - Softmax probability
 
-For the 30kph Speed Limit image, the model is relatively sure that this is a stop sign (probability of 0.6), and the image does contain a stop sign. The top five soft max probabilities were
+For the 30kph Speed Limit image, the model is slightly sure that this is a 30kph Speed Limit sign (probability of 0.54), and the image does contain a 30kph Speed Limit sign. The top five soft max probabilities were:
 
-| Probability         	|     Prediction	        					| 
-|:---------------------:|:---------------------------------------------:| 
-| .60         			| Stop sign   									| 
-| .20     				| U-turn 										|
-| .05					| Yield											|
-| .04	      			| Bumpy Road					 				|
-| .01				    | Slippery Road      							|
+| Probability         	|     Prediction	        					|
+|:----------------------|:----------------------------------------------|
+| 5.37398100e-01        | 1 - 30kph Speed Limit   						|
+| 4.62555379e-01     	| 2 - 50kph Speed Limit							|
+| 4.50176558e-05		| 3 - 60kph Speed Limit							|
+| 1.47699700e-06	    | 5 - 80kph Speed Limit					 		|
+| 4.73866363e-11		| 15 - Yield      							    |
 
-
-##### Children Crossing - Softmax probability
-
-For the 30kph Speed Limit image, the model is relatively sure that this is a stop sign (probability of 0.6), and the image does contain a stop sign. The top five soft max probabilities were
-
-| Probability         	|     Prediction	        					| 
-|:---------------------:|:---------------------------------------------:| 
-| .60         			| Stop sign   									| 
-| .20     				| U-turn 										|
-| .05					| Yield											|
-| .04	      			| Bumpy Road					 				|
-| .01				    | Slippery Road      							|
-
-##### Roundabout - Softmax probability
-
-For the 30kph Speed Limit image, the model is relatively sure that this is a stop sign (probability of 0.6), and the image does contain a stop sign. The top five soft max probabilities were
-
-| Probability         	|     Prediction	        					| 
-|:---------------------:|:---------------------------------------------:| 
-| .60         			| Stop sign   									| 
-| .20     				| U-turn 										|
-| .05					| Yield											|
-| .04	      			| Bumpy Road					 				|
-| .01				    | Slippery Road      							|
 
 ##### Stop - Softmax probability
 
-For the 30kph Speed Limit image, the model is relatively sure that this is a stop sign (probability of 0.6), and the image does contain a stop sign. The top five soft max probabilities were
+For the Stop image, the model is very sure that this is a stop sign (probability of 0.83), and the image does contain a stop sign. The top five soft max probabilities were
 
-| Probability         	|     Prediction	        					| 
-|:---------------------:|:---------------------------------------------:| 
-| .60         			| Stop sign   									| 
-| .20     				| U-turn 										|
-| .05					| Yield											|
-| .04	      			| Bumpy Road					 				|
-| .01				    | Slippery Road      							|
+| Probability         	|     Prediction	        					|
+|:----------------------|:----------------------------------------------|
+| 8.28190088e-01        | 14 - Stop   							        |
+| 1.55861080e-01     	| 8 - 120 kph Speed Limit 						|
+| 1.49630122e-02		| 2 - 50 kph Speed Limit						|
+| 8.42884416e-04	    | 4 - 70 kph Speed Limit					 	|
+| 1.31976471e-04		| 15 - No Vehicles     							|
 
 ##### Turn Right Ahead - Softmax probability
 
-For the 30kph Speed Limit image, the model is relatively sure that this is a stop sign (probability of 0.6), and the image does contain a stop sign. The top five soft max probabilities were
+For the Turn Right Ahead image, the model is absolutely sure that this is a Turn Right Ahead sign (probability of 1.0), and the image does contain a Turn Right Ahead sign. The top five soft max probabilities were
 
-| Probability         	|     Prediction	        					| 
-|:---------------------:|:---------------------------------------------:| 
-| .60         			| Stop sign   									| 
-| .20     				| U-turn 										|
-| .05					| Yield											|
-| .04	      			| Bumpy Road					 				|
-| .01				    | Slippery Road      							|
+| Probability         	|     Prediction	        					|
+|:----------------------|:----------------------------------------------|
+| 1.0         			| 33 - Turn Right Ahead   						|
+| 3.22184901e-09     	| 1 - 30kph Speed Limit							|
+| 6.05238732e-12		| 11 - Right-of-way at the next intersection	|
+| 5.89465239e-12	    | 14 - Stop					 		    		|
+| 3.86949003e-15		| 25 - Road Work      							|
+
+##### Roundabout - Softmax probability
+
+For the Roundabout image, agin the model is absolutely sure that this is a Roundabout sign (probability of 0.99), and the image does contain a Roundabout sign. The top five soft max probabilities were
+
+| Probability         	|     Prediction	        					|
+|:----------------------|:----------------------------------------------|
+| 9.99836683e-01        | 40 - Roundabout 							    |
+| 1.61768752e-04     	| 11 - Right-of-way at the next intersection	|
+| 9.70686870e-07		| 1 - 30kph Speed Limit							|
+| 3.74547000e-07	    | 12 - Priority Road			 				|
+| 1.28573106e-07		| 7 - 100 kph Speed Limit						|
+
+##### Children Crossing - Softmax probability
+
+For the Childred Crossing image, once again the model is absolutely sure that this is a Children Crossing sign (probability of 1.0), and the image does contain a Children Crossing sign. The top five soft max probabilities were
+
+| Probability         	|     Prediction	        					|
+|:----------------------|:----------------------------------------------|
+| 1.0         			| 28 - Children Crossing						|
+| 3.96120612e-08     	| 20 - Dangerous curve to the right				|
+| 2.11690954e-09		| 23 - Slippery road							|
+| 2.37768583e-10	    | 30 - Beware of ice/snow		 				|
+| 7.49340243e-11		| 29 - Bicycle Crossing							|
 
 As expected, the clarity of the images allowed the model to be fairly confident of its predictions for all but the first image.
