@@ -101,9 +101,9 @@ The code for training the model is located in the Jupyter notebook in analysis c
 
 My final model results were:
 
-* training set accuracy of 0.98
-* validation set accuracy of 0.94
-* test set accuracy of 0.92
+* **Training set accuracy of 0.98**
+* **Validation set accuracy of 0.94**
+* **Test set accuracy of 0.92**
 
 As mentioned above, the LeNet model was chosen as the initial design for the model. This was chosen due to its convolutional nature. Given that we would be trying to classify common traffic signs in multiple images, where the same basic features, such as edges, shapes, groupings of shapes, of each sign may appear slightly differently in the images, a convolutional approach seemed appropriate. It also greatly helped that the traffic sign test images had the same pixel dimension and color depth (after pre-processing) as the MNIST images. This provided a good starting point for choosing convolution filter and max pooling dimensions. A test run was performed with the base LeNet architecture, and this run showed sub-standard accuracy performance on the validation set and also indicated some level of over-fitting as the validation set accuracy was several points lower than the test set. From here, basic changes to image pre-processing were applied, which improved validation accuracy somewhat, but did not remedy the over-fitting issue. To address the over-fitting issue several things were tried, including, changing the total number of layers, changing filter sizes, adjusting the output size of each fully connected layer, and adding a dropout layer between the fully-connected layers. The addition of the dropout layer improve produced the greatest reduction in the overfitting issue so it was chosen for the final architecture. The location of the dropout within the fully connected layers had minimal impact, but locating it before the final output layer seemed to make the most intuitive sense so that is where it was located in the final architecture. The final keep probability was aggressively chosen, but proved to produce the best accuracy. With all that said, despite sufficient performance on the validation set, the over-fitting was never completely removed. As mentioned above, I believe that instead of trying to address this with the model architecture, splitting up the training set into multiple cross-validation sets using a k-folds approach might have had produced better results to further reduced the over-fitting.
 
